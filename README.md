@@ -655,7 +655,7 @@ const resultD = `${numA} / ${numB} = ${numA / numB}`;
 ```js
 const a = 1; // number
 const b = "1"; // string
-// 1단계 number ===> string 으로 물어보지 않고 변환(암묵적 데이터 타입 변환)
+// 1단계 number ===> string 으로 물어보지 않고 변환(암묵적 데이터 타입 변환implicit coercion)
 // string + string ===> string
 const result = a + b; // ?
 ```
@@ -967,3 +967,365 @@ const result = user?.islogin ? `${user.name}님 반가워요.` : "로그인 해 
 let num = 5;
 let result = num % 2 === 0 ? "짝수" : "홀수";
 ```
+
+## 3.조건문(Condition)
+
+### 3.1. if 문
+
+- `참/거짓`을 판단하여 코드 분기 실행함.
+
+-모양1
+
+```js
+if(조건) {
+  조건이 참이면 실행;
+}
+```
+
+- 모양 2
+
+```js
+if(조건) {
+  조건이 참이면 실행;
+} else {
+  조건이 거짓이면 실행;
+}
+```
+
+- 모양 3
+
+```js
+if(조건) {
+  조건이 참이면 실행;
+} else if(조건2){
+  조건이 거짓이면 실행;
+} else if(조건3){
+  조건이 거짓이면 실행;
+}
+```
+
+- 예제) 로그인이 된 경우에 메세지 출력하기
+
+```js
+const islogin = true;
+if (isLogin === true) {
+  console.log("로그인하셨네요. 반갑습니다.");
+}
+
+if (isLogin) {
+  console.log("로그인하셨네요. 반갑습니다.");
+}
+// 아래처럼 하면 힘들다. 코드 가독성이 떨어진다. (한줄 사용시에는 하나만 작동시킬때만 중괄호 생략가능함)
+if (isLogin) console.log("로그인하셨네요. 반갑습니다.");
+```
+
+- 예제) 로그인 된 경우의 메시지와 로그인 안된 경우의 메시지 출력하기.
+
+```js
+const islogin = true;
+if (isLogin) {
+  console.log("어서오세요");
+} else {
+  console.log("로그인 하셔야 합니다.");
+}
+```
+
+- 예제) 나이에 따라서 다른 메시지 출력하기 (조건이 2개이상인 경우)
+
+```js
+const age = 100; //if문을 작성시에 20대 부터 시작한다면 100세를 넣으면 20대이시네요가 뜨므로 반대로 작성
+if (age >= 60) {
+  console.log("어르신 이시네요.");
+} else if (age >= 50) {
+  console.log("50대 이시네요.");
+} else if (age >= 40) {
+  console.log("40대 이시네요.");
+} else if (age >= 30) {
+  console.log("30대 이시네요.");
+} else if (age >= 20) {
+  console.log("청년 이시네요");
+} else {
+  console.log("미성년 이시네요.");
+}
+```
+
+- EX) 사용자가 입력한 항목이 값이 `없을 경우` 메시지 보내기 (필수 입력 사항)
+
+```js
+const name = "홍길동";
+const pass = "1234";
+const useinfoCheck = false; // 사용자 정보 활용 동의
+const useEmailCheck = false; // 이메일 활용 동의
+
+if (name === "") {
+  // !name = 거짓
+  alert("이름을 입력하세요");
+  return; //
+}
+if (!name) {
+  // !name = 거짓
+  alert("이름을 입력하세요");
+}
+if (pass) {
+  alert("이름을 입력하세요");
+  return;
+}
+if (!pass) {
+  alert("이름을 입력하세요");
+  return;
+}
+if (!useInfoCheck) {
+  alert("이름을 입력하세요");
+}
+if (useInfoCheck === false) {
+  alert("이름을 입력하세요");
+}
+if (!useEmailCheck) {
+  alert("이메일 수신 동의를 체크해주세요.");
+  return;
+}
+
+console.log("저희 서비스를 자유롭게 활용하세요.");
+```
+
+### 3.2. swith 문
+
+- `여러 개의 값` 중 하나의 `값`이 같은지 판단 후 실행 (값을 비교)
+
+```js
+switch (값) {
+  case 비교값1:
+    실행코드;
+    break;
+  case 비교값2:
+    실행코드;
+    break;
+  case 비교값3:
+    실행코드;
+    break;
+  default:
+    실행코드;
+    break;
+}
+```
+
+- 예시) 엘리베이터층
+
+```js
+const layer = 5; // 값
+
+siwtch (layer) {
+  case 1:
+    console.log("1층 내리세요.")
+    break;
+  case 2:
+    console.log("2층 내리세요.")
+    break;
+  case 3:
+    console.log("3층 내리세요.")
+    break;
+  case 4:
+    console.log("4층 내리세요.")
+    break;
+  case 5:
+    console.log("5층 내리세요.")
+    break;
+  default:
+    console.log("당신은 내릴 층이 없습니다.")
+    break;
+}
+```
+
+- 예시)
+
+```js
+const userRole = "ADMIN"
+
+if (userRole === "ADMIN") {
+  console.log("회원")
+} else (userRole === "ADMIN") {
+  console.log("관리자")
+} else {
+  console.log("비회원")
+}
+
+switch (userRole) {
+  case "MEMBER":
+    console.log("회원")
+    break;
+  case "ADMIN":
+    console.log("관리자")
+    break;
+  default:
+    console.log("비회원")
+    break;
+}
+
+```
+
+## 4. 반복문 (Loop)
+
+- 동일한 실행을 반복하는 문법.
+
+### 4.1. for 구문
+
+- 주어진 `횟수만큼` 반복 실행 (`개발자가 반복횟수를 아는 경우`)
+
+```js
+for(초기값은 단 한번만 실행 ; 조건식의 결과가 true/false ; 증감식은 조건식을 false 로 만들기 위한 것 ) {
+
+  할일 코드 작성
+
+}
+```
+
+-예제)
+
+```js
+const total = 10; // 총 반복횟수
+
+for (let i = 0; i < total; i++) {
+  //let i = 0; i < 10; i = i + 1
+  console.log(`현재 ${i} 입니다.`);
+}
+```
+
+- 예제) 총 합계 값 알아내기
+
+```js
+// 장바구니 담긴 제품 가격 모음.
+const bucketsArr = [1000, 500, 700, 400];
+// 반복 횟수
+const total = 4;
+// 반복문 없다면
+let totalPrice = bucketsArr[0] + bucketsArr[1] + bucketsArr[2] + bucketsArr[3];
+// 반복문을 활용한다면
+let totalPriceFor = 0;
+for (let i = 0; i < total; i++) {
+  totalPriceFor = totalPrice + bucketsArr[i];
+  // totalPriceFor += bucketsArr[i];
+}
+```
+
+- 예) 제품의 이름과 가격 및 재고를 html 태그로 출력하는 예제
+- 예) 백엔드에서 제품의 목록은 json 으로 주어진다.
+
+```js
+// 백엔드에서 가져온 자료 json
+const goodData = [
+  { id: 542, name: "사과", price: 1000, stock: 10 },
+  { id: 5557, name: "딸기", price: 200, stock: 0 },
+  { id: 2147, name: "키위", price: 5000, stock: 5000 },
+];
+// 반복횟수
+const total = goodData.length;
+for (let i = 0; i < total; i++) {
+  // 제품 1개를 뽑아서 보관한다.
+  const good = goodData[i];
+  // html 만들기
+  const tag = `<div id="${good.id}" class="good-box">
+   <p>제품명 : ${good.name}</p>
+   <p>가격 : ${good.price}</p>
+   <p>재고수량 : ${good.stock || "재고가 없어요"}</p>
+  </div>`;
+}
+```
+
+- ex) 구구단
+- 가까운 for 문에서 `break`는 반복문 빠져나오고 종료된다.
+- 가까운 for 문에서 `continue`는 반복문 실행 건너띄고 계속 실행.
+
+```js
+const total = 9;
+for (let i = 1; i <= total; i++) {
+  if (i % 3 === 0) {
+    // 건너띄기
+    continue;
+  }
+  if (i === 6) {
+    // 종료하기
+    break;
+  }
+
+  console.log(i + " 단");
+
+  for (let j = 1; j <= total; j++) {
+    if (j === 6) {
+      break;
+    }
+    console.log(`${i} * ${j} = ${i * j}`); // i + "*" + j + "=" +(i*j)
+  }
+}
+```
+
+### 4.2. for in 구문
+
+- for 문으로 모두 가능하다.
+- for 를 `객체를 대상`으로 편리하게 사용하도록 지원하는 문법
+
+### 4.3. for of 구문
+
+- for 문으로 모두 가능하다.
+- for 를 `배열, 문자열등을 대상`으로 편리하게 사용하다로고 지원하는 문법
+- `iterator` 즉, `순서가 있는 데이터형`에서 사용
+
+```js
+const citiesArr = ["대구", "서울", "부산"];
+for (let city of citiesArr) {
+  console.log(city);
+}
+
+const words = "안녕하세요.반가워요.";
+for (let i of words) {
+  console.log(i);
+}
+```
+
+### 4.4. while 구문
+
+- `조건이 참`인 동안 무한히 반복함.
+- 반복에 횟수를 모르는 경우
+
+```js
+while(조건) {
+  할일;
+  반드시 거짓으로 만들어야 합니다. // 안 만들면 무한로프
+}
+```
+
+```js
+let count = 0;
+
+while (count < 5) {
+  // 거짓을 만들기 위한 조거능ㄹ 작성함.
+  count = count + 1;
+  console.log(count);
+}
+```
+
+### 4.5. do while 구문
+
+- while 과 다르게 일단 실행하고 조건 검사
+
+```js
+do {
+  할일;
+} while (조건);
+```
+
+```js
+let count = 0;
+
+do {
+  // 거짓을 만들기 위한 조거능ㄹ 작성함.
+  count = count + 1;
+  console.log(count);
+} while (count < 5);
+```
+
+## 5. 함수 (fuction)
+
+- 기능을 `{}` 묶어서 관리
+- 여러번 재활용한다.
+- 문서 즉 설명서(JSDoc)가 잘 만들어져야 함.
+- 기능 예외처리를 잘 해야 한다.
