@@ -2574,3 +2574,111 @@ run(function () {});
 const bt = document.querySelector(".bt");
 bt.addEventListener("click", function () {});
 ```
+
+## 14. 객체(object)
+
+### 14.1. 객체를 `가장 간단`하게 만드는 법.
+
+- `객체 리터럴`로 생성한다.
+- `리터럴(literal)` 이라는 단어는 꼭 정의해 두세요.
+- 리터럴은 정해진 `값을 개발자가 직접 작성`해 주는 것.
+- 숫자 리터럴, 문자열 리터럴, 배열 리터럴, 객체 리터럴
+
+```js
+const 객체 = {
+  객체키명: 키값,
+  객체키명: 키값,
+};
+```
+
+- 만약 객체를 1개씩 만든다면 즉, `객체리터럴로 생성한다`면 객체명은 `Camel case`로 생성
+
+```js
+const personInfo = {
+  nickName: "아이유",
+  age: 20,
+  job: "singer",
+};
+```
+
+### 14.2. 여러 개의 동일한 형태(구조)의 객체를 생성한다면
+
+- `객체 생성자 함수`를 이용하는 법 (함수 이름이 `Pscal Case`)
+
+```js
+function PersonInfo(_name, _age) {
+  this.nickName: "아이유";
+  this.age: 20;
+  this.job: "singer";
+}
+const 아이유 = new PersonInfo("아이유",20);
+const 아이유 = new PersonInfo("BTS",20);
+```
+
+- `클래스`로 이용하는 법 (클래스 이름이 `Pscal Case`)
+
+```js
+class PersonInfo {
+  constructor(_name, _age){
+  this.nickName: "아이유";
+  this.age: 20;
+  this.job: "singer";
+  }
+}
+const 아이유 = new PersonInfo("아이유",20);
+const 아이유 = new PersonInfo("BTS",20);
+```
+
+### 14.3. 연습예제
+
+```js
+const student_1 = {
+  name: "홍길동",
+  age: 10,
+};
+const student_2 = {
+  name: "둘리",
+  age: 2000,
+};
+```
+
+```js
+function StudentInfo(_naem, _age) {
+  this.studentName: "홍길동";
+  this.age: 10;
+}
+const student_1 = new StudentInfo("홍길동", 10);
+const student_2 = new StudentInfo("둘리", 2000);
+```
+
+### 14.4. 객체에 값 말고 `기능 추가`하기
+
+- 기능은 흔히 `메소드(Method)` 또는 `행위(Behavior)`라고 호칭
+- 객체 리터럴로 메소드 추가해 보기
+
+```js
+const student_1 = {
+  name: "홍길동",
+  age: 20,
+
+  // 정확하게는 Property 로 기능 정의하기
+  sayName: function () {
+    this.name; // 객체
+  },
+
+  // 화살표 함수는 곤란합니다.(주의하자)
+  sayAge: () => {
+    this.age; // window
+  },
+  // 가장 최신 문법으로서 정확히 메소드 임을 표현
+  sayHi() {
+    this.age;
+  },
+};
+```
+
+- 위의 `객체 생성자 함수` 로 수정해 보자.
+
+```js
+
+```
