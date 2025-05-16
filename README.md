@@ -2904,7 +2904,16 @@ console.log(result4);
 - 원본 배열의 요소에 동일한 함수 실행 후 새로운 배열로 생성
 
 ```js
+목표. 새로운 배열을 만든다. 메소드 결과가.
+const 새배열 = 배열.메소드명(function (요소(item), (인덱스)index, (원본배열)arr) { return 값 });
+
+배열.map(function (요소(item), (인덱스)index, (원본배열)arr) { return 값 });
+배열.filter(function (요소(item), (인덱스)index, (원본배열)arr) { return 값 });
+```
+
+```js
 const originArr = ["홍길동", "고길동", "김수한무"];
+
 const copyArr = originArr.map(function (item, index, arr) {
   // console.log(`item : ${item}, index: ${index}`);
   const tag = `<div class="user-info">${item}</div>`;
@@ -2919,6 +2928,18 @@ const copyArrowArr = originArr.map((item, index) => {
   return `<a href="${index}">${item}</a>`;
 });
 console.log(`복제본 copyArrowArr : ${copyArrowArr}`);
+```
+
+```js
+const array1 = ["안", , { age: 5 }, [2, 3, 4], 16];
+
+// Pass a function to map
+const map1 = array1.map(function (x, y) {
+  "안";
+  undefined;
+});
+
+console.log(map1);
 ```
 
 #### 15.6.2. filter()
@@ -3031,3 +3052,148 @@ const result = numArr1.includes(3);
 console.log(`typeof ${typeof result} , ${result}`);
 // typeof boolean , true
 ```
+
+## 16. 객체(`{}`) 와 배열(`[]`)의 필수 이해 사항
+
+### 16.1. 반복문
+
+- 배열에서 사용하는 경우의 반복문 문법
+
+```js
+const arr = [1, 2, 3, 4];
+
+// 가장 전통적인 방식
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+
+// 배열의 요소 반복문 버전
+arr.forEach(function (item) {
+  console.log(item);
+});
+
+// 배열의 for of 문
+for (const item of arr) {
+  console.log(item);
+}
+
+// 배열의 map :  새로운 배열을 만듦
+const now = arr.map(function (item) {
+  return item;
+});
+```
+
+- 객체에서 사용하는 경우의 반복문 문법
+
+```js
+const person = {
+  age: 10,
+  nickName: "hong",
+  isMember: false,
+};
+
+// 객체의 속성명 알아내기
+for (let key in person) {
+  console.log(key); // age, nickName, isMember
+}
+
+// 객체의 속성에 보관하는 값 알아내기
+for (let key in person) {
+  console.log(person[key]); // 10, hong, false
+}
+```
+
+### 16.2 값을 추출해서 보관하기
+
+- 배열
+
+```js
+const arr = ["사과", "딸기", "참외"];
+// 아래처럼 요소 값을 알아내는 것은 비추천
+arr[0];
+arr[1];
+arr[2];
+// 반복문으로 알아내기
+for (let i = 0; i < arr; i++)
+
+```
+
+- `배열 Spread 문법 : 별이 5000 만개`
+  - 배열의 요소를 알아내고,
+  - 배열의 요소를 복사하고,
+  - 새로운 배열에 담아주고
+
+```js
+const arr = ["사과", "딸기", "참외"];
+// 아래처럼 하지는 않습니다.
+const apple = arr[0];
+const straw = arr[1];
+const melon = arr[2];
+
+// 배열 Spread 문법
+const [apple, straw, melon] = [...arr];
+
+// 두 배열을 Spread 문법으로 합치기
+const numArr = [1, 2, 3];
+const strArr = ["a", "b", "c"];
+const reStrArr = strArr.reverse();
+// [1, "a", "b", "c", 2, 3]
+// 아래처럼 권장하지는 않습니다.
+const sampleArr = [1, strArr[0], strArr[1], str[2], 2, 3];
+// Spread 활용
+const resultArr = [1, ...strArr, 2, 3];
+// 구분하세요. (Rest 파라메터 문법)
+function showArr(...rest) {}
+```
+
+- 객체
+
+```js
+const person = {
+age: 10,
+nickName: "hong",
+isMember: false,
+};
+
+const newPerson = {
+  age: person.age,
+  nickname: person.nickName,
+  isMember: person.isMember,
+};
+
+// 객체 Spread 문법
+const nowPerson = { ...person };
+
+// 두개의 객체를 합치기
+const a = { age: 10, name: "hong" };
+const a = { city: "대구", year: 2025 };
+const result = {...a, ...b}
+// 결과 {age: 10, name: "hong", city: "대구", year: 2025 }
+
+// 원본 객체 복사하고 새로운 속성 추가하기
+const ori = {a:1, b:"안경"}
+const now = {...ori, gogo:"happy"}
+// now {a:1, b:"안녕", gogo:"happy"}
+
+// 함수에 매개변수로 객체를 복사해서 전달하기
+function show({name, age}) {
+  console.log(name);
+  console.log(age);
+}
+const user = {name;"아이유", age:20};
+show({...user});
+```
+
+## 17. 비동기(Asyncronous) 통신
+
+- `비동기`는 시간이 오래 걸리는 작업
+- (ex) 데이터 서버에서 자료를 요청(Request) 및 응답(Response)
+- (ex) 데이터 서버에서 파일 전송 시
+- 비동기 작업 중에 결과를 기다리지 않고 다른 작업을 병렬로 실행하도록
+
+### 17.1 비동기 작업 문법 종류
+
+- XHR (Xml Http Request)
+- Callback
+- Promise
+- async/await
