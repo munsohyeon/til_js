@@ -3197,3 +3197,142 @@ show({...user});
 - Callback
 - Promise
 - async/await
+
+### 17.2 데모용 API 사이트
+
+- http://jsonplaceholder.typicode.com/
+- http://www.date.go.kr/index.jsp
+
+### 17.3. XHR
+
+- 서버와 통신하는 작업을 위해서 기본적으로 제공이 됨.
+- `Request` : url 로 자료를 요청한다.
+- `Response` : 응답, url 로 부터 자료를 돌려받는다.
+- status 200 류의 값 : 정상적으로 자료를 응답함.
+- status 400 류의 값 : url이 존재하지 않음.
+- status 500 류의 값 : 데이터 서버가 오류거나 전원이 꺼짐.
+- https://developer.mozilla.org/ko/docs/Web/HTTP/Reference/Status
+
+```js
+// 데이터 서버에 자료를 호출함.
+
+// 1. xhr 객체 한개 만듦
+const xhr = new XMLHttpRequest();
+
+// 2. 주소를 연결함
+// 백엔드 호출시 메소드 5가지 (RestAPI 라고 함)
+// GET   : 자료를 주세요.
+// POST  : 자료를 추가합니다.
+// DELETE : 자료를 삭제해 주세요.
+// PUT   :  자료 전체를 수정해 주세요.
+// PATCH :  자료 내용에서 일부분만 수정해 주세요.
+xhr.open("GET", "https://jsonplaceholder.typicode.com/photos");
+
+// 3. 웹브라우저로 요청을 합니다.
+xhr.send();
+
+// 4. 요청 이후 응답이 오기를 기다린다.
+xhr.onload = function () {
+  console.log("요청이 되어졌을 때 백엔드 회신정보 : ", xhr);
+  if (xhr.status === 200) {
+    console.log("정상적인 Response 됨");
+  } else if (xhr.status === 404) {
+    console.log("주소가 잘못되었네요.");
+  } else if (xhr.status === 505) {
+    console.log("서버에 오류입니다. 잠시 후 시도해 주세요.");
+  }
+};
+```
+
+### 17.4. Callbaack 활용하기
+
+```js
+// 데이터 서버에 자료를 호출함.
+
+function getData(api = "posts", fna) {
+  // 1. xhr 객체 한개 만듦
+  const xhr = new XMLHttpRequest();
+  // 2. 주소를 연결함
+  xhr.open("GET", `https://jsonplaceholder.typicode.com/${api}`);
+  // 3. 웹브라우저로 요청을 합니다.
+  xhr.send();
+
+  // 4. 요청 이후 응답이 오기를 기다린다.
+  xhr.onload = function () {
+    console.log("요청이 되어졌을 때 백엔드 회신정보 : ", xhr);
+    if (xhr.status === 200) {
+      // console.log("정상적인 Response 됨 : " xhr.response);
+      // 콜백함수 : 자료가 오면 자료를 활용하고 싶다.
+      fna(xhr.response);
+    } else if (xhr.status === 404) {
+      console.log("주소가 잘못되었네요.");
+    } else if (xhr.status === 505) {
+      console.log("서버에 오류입니다. 잠시 후 시도해 주세요.");
+    }
+  };
+}
+// 콜백함수 만들기 : 자료가 들어오면 처리함.
+const postsParser = function () {
+  console.log("포스트자료");
+};
+const commentsParser = function (res) {
+  console.log(res);
+};
+const albumsParser = function (res) {};
+const photosParser = function (res) {};
+const todosParser = function (res) {};
+const usersParser = function (res) {};
+// 함수 사용
+getData("posts", postsParser);
+getData("comments", commentsParser);
+getData("albums", albumsParser);
+getData("photos", photosParser);
+getData("todos", todosParser);
+getData("users", usersParser);
+```
+
+### 17.5. Promise 활용하기
+
+- 서버 연동이 끝날 때 원하는 콜백함수 실행
+- 2개의 매개변수를 전달 받는다.
+- resolve 콜백함수 : 성공시 실행함수
+- reject 콜백함수 : 실패시 실행함수
+
+```js
+// 데이터 서버에 자료를 호출함.
+
+function getData(api = "posts") {
+  return new Promise(function (resolve, reject) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `https://jsonplaceholder.typicode.com/${api}`);
+    xhr.send();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // 성공
+        resolve(xhr.response);
+      } else if (xhr.status === 404) {
+        // 실패
+        reject();
+      } else if (xhr.status === 505) {
+        console.log("서버가 불안정합니다. 잠시 후 재접속해주세요.");
+      }
+    };
+  });
+}
+
+// 함수 사용
+getData("posts")
+  .then(function () {})
+  .catch(function () {});
+
+getData("comments").then().catch();
+getData("albums").then().catch();
+getData("photos").then().catch();
+getData("todos").then().catch();
+getData("users").then().catch();
+
+function show() {
+  console.log("반가워");
+}
+show("안녕");
+```
