@@ -3312,27 +3312,84 @@ function getData(api = "posts") {
         resolve(xhr.response);
       } else if (xhr.status === 404) {
         // 실패
-        reject();
+        reject("데이터 없어요.");
       } else if (xhr.status === 505) {
         console.log("서버가 불안정합니다. 잠시 후 재접속해주세요.");
       }
     };
   });
 }
-
 // 함수 사용
 getData("posts")
-  .then(function () {})
-  .catch(function () {});
+  .then(function (data) {
+    return getData("comments");
+  })
+  .then(function (data) {
+    return getData("albums");
+  })
+  .then(function (data) {
+    return getData("photos");
+  })
+  .then(function (data) {
+    return getData("todos");
+  })
+  .then(function (data) {
+    return getData("users");
+  })
+  .catch(function (err) {});
+```
 
-getData("comments").then().catch();
-getData("albums").then().catch();
-getData("photos").then().catch();
-getData("todos").then().catch();
-getData("users").then().catch();
+### 17.6. async / await
 
-function show() {
-  console.log("반가워");
+- 강력히 추천합니다.
+- Promise 를 편하게 쓰기위해서 최신 문법 제공
+- `function 키워드 앞쪽에 async` 를 작성합니다.
+- `BE 연동 쪽에  await` 를 작성합니다.
+- 1단계
+
+```js
+async function getAllData() {
+  try {
+  } catch (error) {}
 }
-show("안녕");
+
+getAllData();
+```
+
+- 2단계
+
+```js
+async function getAllData() {
+  try {
+    const apiUrl = "https://jsonplaceholder.typicode.com";
+    // BE 데이터 연동 시도
+    let res = await fetch(`${apiUrl}/posts`);
+    let data = await res.json();
+    console.log(data);
+
+    res = await fetch("https://jsonplaceholder.typicode.com/comments");
+    data = await res.json();
+    console.log(data);
+
+    res = await fetch("https://jsonplaceholder.typicode.com/albums");
+    data = await res.json();
+    console.log(data);
+
+    res = await fetch("https://jsonplaceholder.typicode.com/photos");
+    data = await res.json();
+    console.log(data);
+
+    res = await fetch("https://jsonplaceholder.typicode.com/todos");
+    data = await res.json();
+    console.log(data);
+
+    res = await fetch("https://jsonplaceholder.typicode.com/users");
+    data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.log("ERROR 입니다. : " + error);
+  }
+}
+
+getAllData();
 ```
